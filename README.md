@@ -1,6 +1,6 @@
 # OpenFaaS RESTful API w/ Node and Postgres
 
-Simple example of an OpenFaaS RESTful API.
+Simple example of an [OpenFaaS](https://www.openfaas.com/) RESTful API.
 
 ## Setup
 
@@ -51,7 +51,7 @@ $ curl http://localhost:8080/function/read
 
 $ curl -X POST http://localhost:8080/function/update -d \
   '{"name":"NeverEnding Story 2", "id": "1"}'
-  
+
 $ curl -X POST http://localhost:8080/function/delete -d \
   '{"id":"1"}'
 ```
