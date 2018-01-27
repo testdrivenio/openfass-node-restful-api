@@ -1,0 +1,29 @@
+provider:
+  name: faas
+  gateway: http://localhost:8080
+
+functions:
+  read:
+    lang: node
+    handler: ./api-read
+    image: api/read
+    environment_file:
+      - env.yml
+  create:
+    lang: node
+    handler: ./api-create
+    image: api/create
+    environment_file:
+      - env.yml
+  update:
+    lang: node
+    handler: ./api-update
+    image: api/update
+    environment_file:
+      - env.yml
+  delete:
+    lang: node
+    handler: ./api-delete
+    image: api/delete
+    environment_file:
+      - env.yml

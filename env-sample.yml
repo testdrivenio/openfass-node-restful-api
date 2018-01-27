@@ -1,0 +1,5 @@
+environment:
+  POSTGRES_USER: update
+  POSTGRES_PASS: update
+  POSTGRES_DB: update
+  POSTGRES_HOST: update
