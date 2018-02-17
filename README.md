@@ -55,3 +55,7 @@ $ curl -X POST http://localhost:8080/function/update -d \
 $ curl -X POST http://localhost:8080/function/delete -d \
   '{"id":"1"}'
 ```
+
+## Deploy
+
+Check out the deployment [guide](/deploy.md).
