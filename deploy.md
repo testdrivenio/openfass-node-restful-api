@@ -2,6 +2,10 @@
 
 > Get $10 in Digital Ocean credit [here](https://m.do.co/c/d8f211a4b4c2).
 
+*Check out the [video](https://youtu.be/ru_hg9I5mwM) as well.*
+
+### Steps
+
 Create droplet:
 
 ```sh
