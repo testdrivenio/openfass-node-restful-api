@@ -1,6 +1,6 @@
 # OpenFaaS RESTful API w/ Node and Postgres
 
-Simple example of an [OpenFaaS](https://www.openfaas.com/) RESTful API.
+Simple example of an [OpenFaaS](https://www.openfaas.com/) RESTful API. Check out the [video](https://youtu.be/ru_hg9I5mwM) showing how to deploy the project to Digial Ocean with Docker Swarm.
 
 ## Setup
 
