@@ -6,8 +6,8 @@ This guide looks at how to deploy a Serverless API to Digital Ocean with OpenFaa
 
 Pick an orchestrator:
 
-1. Docker Swarm
-1. Kubernetes
+1. [Docker Swarm](#docker-swarm)
+1. [Kubernetes](#kubernetes)
 
 ## Docker Swarm
 
@@ -79,8 +79,6 @@ $ curl -X POST $(echo http://$(docker-machine ip node):8080)/function/delete -d 
 
 ## Kubernetes
 
-^83He$@zh3wm
-
 ### Steps
 
 Create a new *Ubuntu 16.04.3 x64* droplet on [Digital Ocean](https://m.do.co/c/d8f211a4b4c2).
@@ -110,6 +108,8 @@ Deploy Kubernetes:
 $ sudo kubeadm init
 ```
 
+Then run:
+
 ```sh
 $ mkdir -p $HOME/.kube
 $ sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
@@ -136,7 +136,7 @@ $ cd faas-netes/
 $ kubectl apply -f ./namespaces.yml,./yaml
 ```
 
-Navigate to [http://<YOUR_IP>:31112](http://<YOUR_IP>:31112) to view the OpenFaaS dashboard.
+Navigate to [http://YOUR_IP:31112](http://YOUR_IP:31112) to view the OpenFaaS dashboard.
 
 Clone down the API:
 
