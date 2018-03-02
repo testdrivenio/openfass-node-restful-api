@@ -1,6 +1,15 @@
-# Deploy to Digital Ocean with Docker Swarm
+# Deploy to Digital Ocean
 
 > Get $10 in Digital Ocean credit [here](https://m.do.co/c/d8f211a4b4c2).
+
+This guide looks at how to deploy a Serverless API to Digital Ocean with OpenFaaS.
+
+Pick an orchestrator:
+
+1. Docker Swarm
+1. Kubernetes
+
+## Docker Swarm
 
 Create droplet:
 
