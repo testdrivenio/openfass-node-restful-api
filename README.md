@@ -2,6 +2,8 @@
 
 Simple example of an [OpenFaaS](https://www.openfaas.com/) RESTful API.
 
+> Check out the [video](https://youtu.be/ru_hg9I5mwM) showing how to deploy the project to Digital Ocean with Docker Swarm.
+
 ## Setup
 
 Spin up [OpenFaas](https://www.openfaas.com/):
@@ -58,4 +60,4 @@ $ curl -X POST http://localhost:8080/function/delete -d \
 
 ## Deploy
 
-Check out the deployment [guide](/deploy.md).
+Check out the deployment [guide](/deploy.md) to learn how to deploy to Digital Ocean using Docker Swarm or Kubernetes.
