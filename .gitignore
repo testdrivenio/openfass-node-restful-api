@@ -1,3 +1,4 @@
 template
 build
 env.yml
+.DS_Store

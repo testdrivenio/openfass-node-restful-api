@@ -1,3 +1,5 @@
+const getStdin = require('get-stdin');
+
 const knex = require('knex')({
   client: 'pg',
   connection: {
@@ -8,18 +10,19 @@ const knex = require('knex')({
   }
 });
 
-module.exports = (content, callback) => {
+function handle(content, callback) {
   const movie = JSON.parse(content);
   const returnObject = {
     status: 'success',
-    data: null
+    data: 'Movie does not exist!'
   };
   return knex('movie')
-  .insert(movie)
+  .del()
+  .where({ id: parseInt(movie.id) })
   .returning('*')
-  .then(() => {
+  .then((movies) => {
     knex.destroy();
-    returnObject.data = `${movie.name} added!`;
+    if (movies.length) returnObject.data = `Movie id ${movie.id} deleted!`;
     callback(null, JSON.stringify(returnObject));
   })
   .catch((err) => {
@@ -28,4 +31,18 @@ module.exports = (content, callback) => {
     returnObject.data = err;
     callback(JSON.stringify(returnObject));
   });
-};
+}
+
+getStdin()
+  .then((val) => {
+    handle(val, (err, res) => {
+      if (err) {
+        console.error(err);
+      } else {
+        console.log(res);
+      }
+    });
+  })
+  .catch((e) => {
+    console.error(e.stack);
+  });
