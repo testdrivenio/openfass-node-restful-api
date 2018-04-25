@@ -47,3 +47,7 @@ $ curl -X POST http://localhost:8080/function/func_api-update -d \
 $ curl -X POST http://localhost:8080/function/func_api-delete -d \
   '{"id":"1"}'
 ```
+
+## Deploy to Digital Ocean 
+
+[deploy-swarm.md](deploy-swarm.md)
