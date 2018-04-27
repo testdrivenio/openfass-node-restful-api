@@ -4,6 +4,8 @@
 
 This guide looks at how to deploy a Serverless API to Digital Ocean with OpenFaaS and Docker Swarm mode.
 
+> Check out the video [here](https://youtu.be/kSZXPH_f-kE)!
+
 ### Steps
 
 Create droplet:
