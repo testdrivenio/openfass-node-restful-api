@@ -1,0 +1,174 @@
+version: '3.5'
+
+services:
+
+  gateway:
+    ports:
+      - 8080:8080
+    image: functions/gateway:0.7.9
+    networks:
+      - functions
+    environment:
+      functions_provider_url: 'http://faas-swarm:8080/'
+      read_timeout:  '25s'
+      write_timeout: '25s'
+      upstream_timeout: '20s'
+      dnsrr: 'true'
+      # faas_nats_address: 'nats'
+      # faas_nats_port: 4222
+      direct_functions: 'true'
+      direct_functions_suffix: ''
+    deploy:
+      resources:
+        reservations:
+          memory: 100M
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 20
+        window: 380s
+      placement:
+        constraints:
+          - 'node.platform.os == linux'
+
+  faas-swarm:
+    volumes:
+      - '/var/run/docker.sock:/var/run/docker.sock'
+    image:  functions/faas-swarm:0.2.3
+    networks:
+      - functions
+    environment:
+      read_timeout:  '25s'
+      write_timeout: '25s'
+      DOCKER_API_VERSION: '1.30'
+    deploy:
+      placement:
+        constraints:
+          - 'node.role == manager'
+          - 'node.platform.os == linux'
+      resources:
+        reservations:
+          memory: 100M
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 20
+        window: 380s
+
+  # nats:
+  #   image: nats-streaming:0.6.0
+  #   command: '--store memory --cluster_id faas-cluster'
+  #   networks:
+  #     - functions
+  #   deploy:
+  #     resources:
+  #       limits:
+  #         memory: 125M
+  #       reservations:
+  #         memory: 50M
+  #     placement:
+  #       constraints:
+  #         - 'node.platform.os == linux'
+
+  # queue-worker:
+  #   image: functions/queue-worker:0.4.3
+  #   networks:
+  #     - functions
+  #   environment:
+  #     max_inflight: '1'
+  #     ack_timeout: '30s'
+  #   deploy:
+  #     resources:
+  #       limits:
+  #         memory: 50M
+  #       reservations:
+  #         memory: 20M
+  #     restart_policy:
+  #       condition: on-failure
+  #       delay: 5s
+  #       max_attempts: 20
+  #       window: 380s
+  #     placement:
+  #       constraints:
+  #         - 'node.platform.os == linux'
+
+  api-create:
+    image: mjhea0/faas-api-create:latest
+    labels:
+      function: 'true'
+    networks:
+      - functions
+    environment:
+      no_proxy: 'gateway'
+      https_proxy: $https_proxy
+    env_file:
+      - .env
+    deploy:
+      placement:
+        constraints:
+          - 'node.platform.os == linux'
+
+  api-read:
+    image: mjhea0/faas-api-read:latest
+    labels:
+      function: 'true'
+    networks:
+      - functions
+    environment:
+      no_proxy: 'gateway'
+      https_proxy: $https_proxy
+    env_file:
+      - .env
+    deploy:
+      placement:
+        constraints:
+          - 'node.platform.os == linux'
+
+  api-update:
+    image: mjhea0/faas-api-update:latest
+    labels:
+      function: 'true'
+    networks:
+      - functions
+    environment:
+      no_proxy: 'gateway'
+      https_proxy: $https_proxy
+    env_file:
+      - .env
+    deploy:
+      placement:
+        constraints:
+          - 'node.platform.os == linux'
+
+  api-delete:
+    image: mjhea0/faas-api-delete:latest
+    labels:
+      function: 'true'
+    networks:
+      - functions
+    environment:
+      no_proxy: 'gateway'
+      https_proxy: $https_proxy
+    env_file:
+      - .env
+    deploy:
+      placement:
+        constraints:
+          - 'node.platform.os == linux'
+
+  movies-db:
+    image: postgres:latest
+    networks:
+      - functions
+    ports:
+      - 5435:5432
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+
+networks:
+  functions:
+    driver: overlay
+    attachable: true
+    labels:
+      - 'openfaas=true'

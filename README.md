@@ -2,62 +2,52 @@
 
 Simple example of an [OpenFaaS](https://www.openfaas.com/) RESTful API.
 
-> Check out the [video](https://youtu.be/ru_hg9I5mwM) showing how to deploy the project to Digital Ocean with Docker Swarm.
+## Getting Started
 
-## Setup
+Build the Docker images for the functions:
 
-Spin up [OpenFaas](https://www.openfaas.com/):
+```sh
+$ sh build.sh
+```
+
+Initialize Swarm mode:
 
 ```sh
 $ docker swarm init
-$ git clone https://github.com/openfaas/faas && \
-  cd faas && \
-  ./deploy_stack.sh
-```
-
-Assuming you have an instance of Postgres running, create a new database along with a new table:
-
-```sh
-CREATE TABLE movie(id SERIAL, name varchar);
-```
-
-Rename *env-sample.yml* to *env.yml* and update the variables:
-
-```yaml
-environment:
-  POSTGRES_USER: update
-  POSTGRES_PASS: update
-  POSTGRES_DB: update
-  POSTGRES_HOST: update
-```
-
-Run a build with the [faas-cli](https://github.com/openfaas/faas-cli):
-
-```sh
-$ faas-cli build -f template.yml
 ```
 
 Deploy:
 
 ```sh
-$ faas-cli deploy -f template.yml
+$ docker stack deploy func --compose-file docker-compose.yml --prune
 ```
 
-Manually test:
+Create database and `movie` table:
 
 ```sh
-$ curl -X POST http://localhost:8080/function/create -d \
+$ PG_CONTAINER_ID=$(docker ps --filter name=movies-db --format "{{.ID}}")
+$ docker exec -ti $PG_CONTAINER_ID psql -U postgres -W
+# CREATE DATABASE movies;
+# \c movies
+# CREATE TABLE movie(id SERIAL, name varchar);
+# \q
+```
+
+Test:
+
+```sh
+$ curl -X POST http://localhost:8080/function/func_api-create -d \
   '{"name":"NeverEnding Story"}'
 
-$ curl http://localhost:8080/function/read
+$ curl http://localhost:8080/function/func_api-read
 
-$ curl -X POST http://localhost:8080/function/update -d \
+$ curl -X POST http://localhost:8080/function/func_api-update -d \
   '{"name":"NeverEnding Story 2", "id": "1"}'
 
-$ curl -X POST http://localhost:8080/function/delete -d \
+$ curl -X POST http://localhost:8080/function/func_api-delete -d \
   '{"id":"1"}'
 ```
 
-## Deploy
+## Deploy to Digital Ocean 
 
-Check out the deployment [guide](/deploy.md) to learn how to deploy to Digital Ocean using Docker Swarm or Kubernetes.
+[deploy-swarm.md](deploy-swarm.md)

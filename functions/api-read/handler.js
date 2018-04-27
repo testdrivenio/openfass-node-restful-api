@@ -1,3 +1,5 @@
+const getStdin = require('get-stdin');
+
 const knex = require('knex')({
   client: 'pg',
   connection: {
@@ -8,7 +10,7 @@ const knex = require('knex')({
   }
 });
 
-module.exports = (content, callback) => {
+function handle(content, callback) {
   const returnObject = {
     status: 'success',
     data: 'No movies!'
@@ -26,4 +28,18 @@ module.exports = (content, callback) => {
     returnObject.data = err;
     callback(JSON.stringify(returnObject));
   });
-};
+}
+
+getStdin()
+  .then((val) => {
+    handle(val, (err, res) => {
+      if (err) {
+        console.error(err);
+      } else {
+        console.log(res);
+      }
+    });
+  })
+  .catch((e) => {
+    console.error(e.stack);
+  });
